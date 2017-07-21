@@ -35,7 +35,7 @@
 # Import libraries
 #################################################################
 import serial
-from errors import Error
+from exceptions import IOError
 
 #################################################################
 # Global Declarations
@@ -89,7 +89,7 @@ def open_connection():
     ser.write("++auto 0\r\n")    # turn off Prologix Read-After-Write mode
     ser.flushInput()             # discard data in serial buffer
   else:
-    raise Error("ERROR: Unable to locate the Prologix USB/GPIB interface.")
+    raise IOError("ERROR: Unable to locate the Prologix USB/GPIB interface.")
     
 
 # Read data from Prologix virtual serial port.
