@@ -102,8 +102,25 @@ def readline():
 def set_address(address):
   ser.write("++addr %d\r\n" % address)
 
+# get Prologix GPIB address.
+def get_address():
+  ser.write("++addr\r\n")
+  return ser.readline()
   
 # Write data to the Prologix virtual serial port.
 def write(command_code):
   ser.write(command_code + "\r\n")
 
+# Set Prologix Mode 1=controller 0=peripheral
+def set_mode(mode):
+  if mode in [0,1]:
+    ser.write("++mode %d\r\n" % mode)
+  else:
+    raise ValueError("ERROR: Invlid mode %d" % mode)
+  
+
+# get Prologix mode.
+def get_mode():
+  ser.write("++mode\r\n")
+  return ser.readline()
+  

@@ -81,3 +81,9 @@ def dump_system():
     prologixGPIBUSB.write(command[0])
     print "%s==%s" % (command[0], prologixGPIBUSB.readline().strip('\r\n'))
   
+
+def reset(): 
+    prologixGPIBUSB.write('*RST')
+ 	      
+def close(): 
+	prologixGPIBUSB.close_connection()
