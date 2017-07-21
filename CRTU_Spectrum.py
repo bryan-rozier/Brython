@@ -1,4 +1,4 @@
-﻿########################################################
+########################################################
 # Functions for talking to the CRTU-RU Spectrum Analyzer
 # Expects that CRTU.init() has been called
 #################################################################
@@ -100,10 +100,11 @@ def dump_status():
 	    print "%s==%s" % (command[0], prologixGPIBUSB.readline().strip('\r\n'))
 
 def set_frequency(centre, span):
-	prologixGPIBUSB.write("1;SENSe:SPECtrum:FREQuency:CENTer %d HZ\r\n" % centre)
-	prologixGPIBUSB.write("1;SENSe:SPECtrum:FREQuency:SPAN %d HZ\r\n" % span)
+  prologixGPIBUSB.write("1;SENSe:SPECtrum:FREQuency:CENTer %d HZ\r\n" % centre)
+  prologixGPIBUSB.write("1;SENSe:SPECtrum:FREQuency:SPAN %d HZ\r\n" % span)
 
 def fetch_max ():
-	prologixGPIBUSB.write('1;FETCh:ARRay:SPECtrum:RESult:MAXimum?')
-	data = prologixGPIBUSB.readline().strip('\r\n')
-	return data
+  prologixGPIBUSB.write('1;INITiate:SPECtrum')
+  prologixGPIBUSB.write('1;FETCh:ARRay:SPECtrum:RESult:MAXimum?')
+  data = prologixGPIBUSB.readline().strip('\r\n')
+  return data
