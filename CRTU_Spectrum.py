@@ -5,6 +5,8 @@
 import prologixGPIBUSB
 from exceptions import IOError
 
+data=[]
+
 def dump_status():
   commands=[
   '1;SENSe:SPECtrum:FREQuency:STARt <numeric> [ HZ | AHZ | FHZ | PHZ | NHZ | UHZ | MIHZ | KHZ | MHZ | GHZ | THZ | PEHZ | EXHZ ]  | MAXimum | MINimum | DEFault',
@@ -104,7 +106,13 @@ def set_frequency(centre, span):
   prologixGPIBUSB.write("1;SENSe:SPECtrum:FREQuency:SPAN %d HZ\r\n" % span)
 
 def fetch_max ():
-  prologixGPIBUSB.write('1;INITiate:SPECtrum')
-  prologixGPIBUSB.write('1;FETCh:ARRay:SPECtrum:RESult:MAXimum?')
-  data = prologixGPIBUSB.readline().strip('\r\n')
-  return data
+#  prologixGPIBUSB.write('1;INITiate:SPECtrum')
+#  prologixGPIBUSB.write('1;FETCh:ARRay:SPECtrum:RESult:MAXimum?')
+#  data = prologixGPIBUSB.readline().strip('\r\n')
+  prologixGPIBUSB.write('1;INITiate:SPECtrum');#]
+  data = prologixGPIBUSB.read_after_write('1;SAMPle:ARRay:SPECtrum:CURRent?');
+  data_strings=data.split(',')
+  #data_floats=[float(i) for i in data_strings]
+  data_floats=map(float,data_strings)
+  return data_floats
+

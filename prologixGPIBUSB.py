@@ -111,6 +111,16 @@ def get_address():
 def write(command_code):
   ser.write(command_code + "\r\n")
 
+# Write data to the Prologix virtual serial port.
+def read_after_write(command_code):
+  ser.write("++auto 1\r\n")    # turn off Prologix Read-After-Write mode
+  ser.flushInput()             # discard data in serial buffer
+  ser.write(command_code + "\r\n")
+  data=ser.readline()
+  ser.write("++auto 0\r\n")    # turn off Prologix Read-After-Write mode
+  ser.flushInput()             # discard data in serial buffer
+  return data
+
 # Set Prologix Mode 1=controller 0=peripheral
 def set_mode(mode):
   if mode in [0,1]:
