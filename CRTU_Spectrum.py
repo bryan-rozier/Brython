@@ -61,7 +61,7 @@ def dump_status():
 #  '1;FETCh:SUBarrays:SPECtrum:RESult:AVERage?',
 #  '1;FETCh:SUBarrays:SPECtrum:RESult:MAXimum?',
 #  '1;FETCh:SUBarrays:SPECtrum:RESult:MINimum?',
-#  '1;FETCh:SPECtrum:STATus?',
+   '1;FETCh:SPECtrum:STATus?',
 #  '1;FETCh:SPECtrum:MARKer:ABSolute? <numeric> [ HZ | AHZ | FHZ | PHZ | NHZ | UHZ | MIHZ | KHZ | MHZ | GHZ | THZ | PEHZ | EXHZ ] ',
 #  '1;FETCh:SPECtrum:MARKer:RELative? <numeric> [ HZ | AHZ | FHZ | PHZ | NHZ | UHZ | MIHZ | KHZ | MHZ | GHZ | THZ | PEHZ | EXHZ ] , <numeric> [ HZ | AHZ | FHZ | PHZ | NHZ | UHZ | MIHZ | KHZ | MHZ | GHZ | THZ | PEHZ | EXHZ ] ',
 #  '1;FETCh:SPECtrum:MARKer:PEAK?',
@@ -109,8 +109,16 @@ def fetch_max ():
 #  prologixGPIBUSB.write('1;INITiate:SPECtrum')
 #  prologixGPIBUSB.write('1;FETCh:ARRay:SPECtrum:RESult:MAXimum?')
 #  data = prologixGPIBUSB.readline().strip('\r\n')
-  prologixGPIBUSB.write('1;INITiate:SPECtrum');#]
-  data = prologixGPIBUSB.read_after_write('1;SAMPle:ARRay:SPECtrum:CURRent?');
+#  prologixGPIBUSB.write('1;FETCh:SPECtrum:STATus?')
+#  print  prologixGPIBUSB.readline()
+  prologixGPIBUSB.write('1;INITiate:SPECtrum')
+#  prologixGPIBUSB.write('1;FETCh:SPECtrum:STATus?')
+#  print  prologixGPIBUSB.readline()
+#  prologixGPIBUSB.write('1;FETCh:SPECtrum:STATus?');
+#  print  prologixGPIBUSB.readline()
+#  prologixGPIBUSB.write('1;FETCh:SPECtrum:STATus?')
+#  print  prologixGPIBUSB.readline()
+  data = prologixGPIBUSB.read_after_write('1;SAMPle:ARRay:SPECtrum:CURRent?')
   data_strings=data.split(',')
   #data_floats=[float(i) for i in data_strings]
   data_floats=map(float,data_strings)
