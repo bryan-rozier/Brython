@@ -131,8 +131,13 @@ def set_mode_continuous():
 def fetch_current ():
   data = prologixGPIBUSB.read_after_write('1;SAMPle:ARRay:SPECtrum:CURRent?')
   data_strings=data.split(',')
-  data_floats=map(float,data_strings)
-  return data_floats
+  data_length=len(data_strings)
+  data_floats=[]
+  if data_length==560:
+	  data_floats=map(float,data_strings)
+  else:
+	  print data_length
+  return data_length,data_floats
 
 def set_init ():
   prologixGPIBUSB.write('1;INITiate:SPECtrum')
