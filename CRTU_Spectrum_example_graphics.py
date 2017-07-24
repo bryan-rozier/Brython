@@ -32,6 +32,7 @@ pg.setConfigOptions(antialias=True)
 #p1.plot(data_points)
 
 p6 = win.addPlot(title="Current Value")
+p6.setRange(rect=None,xRange=(0,560),yRange=(-100,0),update=True,disableAutoRange=True)
 curve = p6.plot(pen='y')
 data = np.random.normal(size=(10,1000))
 ptr = 0
