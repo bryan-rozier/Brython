@@ -118,9 +118,21 @@ def fetch_max ():
 #  print  prologixGPIBUSB.readline()
 #  prologixGPIBUSB.write('1;FETCh:SPECtrum:STATus?')
 #  print  prologixGPIBUSB.readline()
-  data = prologixGPIBUSB.read_after_write('1;SAMPle:ARRay:SPECtrum:CURRent?')
+  data = prologixGPIBUSB.read_after_write('1;SAMPle:ARRay:SPECtrum:RESult:MAXimum?')
   data_strings=data.split(',')
   #data_floats=[float(i) for i in data_strings]
   data_floats=map(float,data_strings)
   return data_floats
 
+def set_mode_continuous():
+  prologixGPIBUSB.write('1;CONFigure:SPECtrum:CONTrol:REPetition CONTinuous,NONE,NONE')
+#  prologixGPIBUSB.write('1;INITiate:SPECtrum')
+
+def fetch_current ():
+  data = prologixGPIBUSB.read_after_write('1;SAMPle:ARRay:SPECtrum:CURRent?')
+  data_strings=data.split(',')
+  data_floats=map(float,data_strings)
+  return data_floats
+
+def set_init ():
+  prologixGPIBUSB.write('1;INITiate:SPECtrum')
