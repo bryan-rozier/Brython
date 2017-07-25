@@ -36,6 +36,7 @@ p6.setRange(rect=None,xRange=(7.880000E+008,7.980000E+008),yRange=(-100,0),updat
 curve = p6.plot(pen='y')
 data = np.random.normal(size=(10,1000))
 ptr = 0
+#curve.setLogMode(False, True)#make y axis log
 #create the correct xAxis scale.
 fScale=np.linspace(7.880000E+008,7.980000E+008,560)#based on values used in set_frequency above
 def update():
