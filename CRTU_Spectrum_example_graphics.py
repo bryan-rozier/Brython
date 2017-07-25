@@ -4,6 +4,7 @@ import CRTU_Spectrum
 from pyqtgraph.Qt import QtGui, QtCore
 import numpy as np
 import pyqtgraph as pg
+import atexit
 
 CRTU.init()
 CRTU.reset()
@@ -13,6 +14,8 @@ CRTU_Spectrum.set_mode_continuous()
 CRTU_Spectrum.dump_status()
 CRTU_Spectrum.set_init()# also kicks off acquisition
 data_length,data_points=CRTU_Spectrum.fetch_current()
+atexit.register(CRTU.close)#call this on exit
+
 #print data_points
 print data_length
 #QtGui.QApplication.setGraphicsSystem('raster')
@@ -52,7 +55,7 @@ def update():
 #    ptr += 1
 timer = QtCore.QTimer()
 timer.timeout.connect(update)
-timer.start(30)
+timer.start(250)
 
 
 ## Start Qt event loop unless running in interactive mode or using pyside.
@@ -60,3 +63,6 @@ if __name__ == '__main__':
     import sys
     if (sys.flags.interactive != 1) or not hasattr(QtCore, 'PYQT_VERSION'):
         QtGui.QApplication.instance().exec_()
+
+
+
