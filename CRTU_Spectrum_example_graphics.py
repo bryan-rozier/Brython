@@ -44,6 +44,9 @@ def update():
     data_length,data_points=CRTU_Spectrum.fetch_current()
     if data_length==560:
     	curve.setData(x=fScale,y=data_points)
+    else:
+    	if data_length>2:
+    		curve.setData(x=fScale[:-(560-data_length) or None],y=data_points)
 #    if ptr == 0:
 #        p6.enableAutoRange('xy', False)  ## stop auto-scaling after the first data set is plotted
 #    ptr += 1

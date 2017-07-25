@@ -136,7 +136,13 @@ def fetch_current ():
   if data_length==560:
 	  data_floats=map(float,data_strings)
   else:
-	  print data_length
+  	if data_length>2:
+  	 	data_strings.pop()  	#remove last (dodgy) reading
+  	 	data_length-=1
+  	 	data_floats=map(float,data_strings)
+  	 	print data_length
+  	else:
+		print data_length
   return data_length,data_floats
 
 def set_init ():
