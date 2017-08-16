@@ -1,10 +1,6 @@
 import serial
 import warnings
 
-cycles=0
-boots=0
-fails=0
-
 user = "root"
 cmd=[]
 cmd.append(("gatewayip","10.10.10.1"))
@@ -52,6 +48,24 @@ try:
         
     print "board booting"
     board.write("boot\n")
+    line=board.readline()
+    while "login:" not in line:
+        print line.strip()
+        line=board.readline()
+
+    board.write(user+ "\n")	 
+    board.readline()#eat echo    
+    line = board.readline()#read response [prompt]
+    board.write("\nca_info\n")	 
+    line = board.readline()#read response [prompt]
+    while "mmc version" not in line:
+        #print "nope" + line.strip()
+        line=board.readline()
+    #print line.strip()
+    while "~#" not in line:
+        print line.strip()
+        line=board.readline()
+
     board.close()
 except KeyboardInterrupt:
     print "Halting Execution"
