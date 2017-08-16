@@ -15,23 +15,31 @@ cmd.append(("boot","ramfs"))
 cmd.append(("tftp_version","LINUXBSP-500"))
 
 
-for name,val in cmd:
-    print name
-    print val
 board = serial.Serial('COM10',115200,timeout=1)
 try:
-		line=""
-		while "Booting" not in line:
-		    print line
-		    line=board.readline()
-		#U-Boot is starting lets stop it asap
-		while "#" not in line:
-		    board.write("\n")	 
-		    line=board.readline()
-		    print line
-		print "At prompt"
-		board.close()
-		print "board booting"
+    line=""
+    while "Booting" not in line:
+        print line
+        line=board.readline()
+    #U-Boot is starting lets stop it asap
+    while "#" not in line:
+        board.write("\n")     
+        line=board.readline()
+        print line
+    print "At prompt"
+    while line != "":
+        line=board.readline()
+    for name,val in cmd:
+        print "Processing: (%s, %s)" % (name,val)
+        board.write("setenv "+name+" "+val+"\n")
+        line = board.readline()#eat echo
+        print "echo %s" % line
+        line = board.readline()#read response [prompt]
+        if "## Error:" in line:
+            print "resp: %s" % line
+
+    board.close()
+    print "board booting"
 
 except KeyboardInterrupt:
     print "Halting Execution"
