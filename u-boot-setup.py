@@ -16,31 +16,43 @@ cmd.append(("tftp_version","LINUXBSP-500"))
 
 
 board = serial.Serial('COM10',115200,timeout=1)
+print "Waiting for power cycle"
 try:
     line=""
     while "Booting" not in line:
-        print line
         line=board.readline()
+        if line!="":
+            print line.strip()
     #U-Boot is starting lets stop it asap
     while "#" not in line:
         board.write("\n")     
         line=board.readline()
-        print line
+        print line.strip()
     print "At prompt"
     while line != "":
         line=board.readline()
     for name,val in cmd:
-        print "Processing: (%s, %s)" % (name,val)
+        #print "Processing: (%s, %s)" % (name,val)
         board.write("setenv "+name+" "+val+"\n")
         line = board.readline()#eat echo
-        print "echo %s" % line
+        print "Processing: %s" % line.strip()
         line = board.readline()#read response [prompt]
         if "## Error:" in line:
             print "resp: %s" % line
-
-    board.close()
+    print "Checking Variables"
+    for  name,val in cmd:
+        board.write("printenv "+name+"\n")
+        line = board.readline()#eat echo
+        #print "Processing: %s" % line.strip()
+        line = board.readline()#read response [prompt]
+        if name in line and val in line:
+            print "OK: %s" % line.strip()
+        else:
+            print "ERROR: %s" % line.strip()
+        
     print "board booting"
-
+    board.write("boot\n")
+    board.close()
 except KeyboardInterrupt:
     print "Halting Execution"
 
