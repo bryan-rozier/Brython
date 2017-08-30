@@ -29,10 +29,14 @@ def init():
   id=id.strip('\r\n')
   #'Rohde&Schwarz,CRTU-RU 1138.4000.82,100091,V5.21\n'
   ids=id.split(',')
-  print ("Manufacturer %s" % ids[0])
-  print ("Model %s" % ids[1])
-  print ("Serial %s" % ids[2])
-  print ("Software Version %s" % ids[3])
+  if "Rohde&Schwarz" in ids[0]:
+    print ("Manufacturer %s" % ids[0])
+    print ("Model %s" % ids[1])
+    print ("Serial %s" % ids[2])
+    print ("Software Version %s" % ids[3])
+  else:
+    prologixGPIBUSB.close_connection()
+    raise IOError("ERROR: No R&S device connected")
     
 #prologixGPIBUSB.write("*IDN?")
 #prologixGPIBUSB.readline()

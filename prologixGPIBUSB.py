@@ -35,6 +35,7 @@
 # Import libraries
 #################################################################
 import serial
+import serial.tools.list_ports
 from exceptions import IOError
 
 #################################################################
@@ -65,24 +66,29 @@ def open_connection():
   global ser, port
   port_found = 0
   ports_tried = 0
+  # produce a list of all serial ports. The list contains a tuple with the port number, 
+  # description and hardware address
+  #
+  ports = list(serial.tools.list_ports.comports())  
 
-  while not port_found and ports_tried < 10:
-    try:
-      # open serial port, 9600 baud, 8 data bits, no parity, 1 stop bit,
-      # 1 second timeout, no software flow control, RTS/CTS flow control
-      # 1 second write timeout
-      ser = serial.Serial("COM%d" % port,9600,8,'N',1,1,0,1,1)
-      ser.write("++ver\r\n")
-      if "Prologix" in ser.readline():
-        port_found = 1
-        #print "Prologix found on port",port
-      else:
-        ser.close()
-        ports_tried = ports_tried + 1
-        port = (port % 10) + 1
-    except serial.serialutil.SerialException:
-      ports_tried = ports_tried + 1
-      port = (port % 10) + 1
+  # return the port if 'USB' is in the description 
+  for port_no, description, address in ports:
+    if 'USB' in description:
+      try:
+        # open serial port, 9600 baud, 8 data bits, no parity, 1 stop bit,
+        # 1 second timeout, no software flow control, RTS/CTS flow control
+        # 1 second write timeout
+        ser = serial.Serial(port_no,9600,8,'N',1,1,0,1,1)
+        #print "Probing " , port_no
+        ser.write("++ver\r\n")
+        if "Prologix" in ser.readline():
+          port_found = 1
+          print "Prologix found on port '%s' Description:'%s' Address:'%s' " % (port_no, description, address)
+          break;
+        else:
+          ser.close()
+      except serial.serialutil.SerialException:
+        print "Probing aborted ",port_no
 
   if port_found:
     ser.write("++mode 1\r\n")    # put Prologix in controller mode
