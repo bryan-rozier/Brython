@@ -91,6 +91,7 @@ def open_connection():
         print "Probing aborted ",port_no
 
   if port_found:
+    ser.write("++savecfg 0\r\n") # Disable saving of configuration parameters in EPROM
     ser.write("++mode 1\r\n")    # put Prologix in controller mode
     ser.write("++auto 0\r\n")    # turn off Prologix Read-After-Write mode
     ser.flushInput()             # discard data in serial buffer
